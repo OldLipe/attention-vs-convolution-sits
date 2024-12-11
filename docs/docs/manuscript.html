@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>CAP-423 - Ciência de Dados Geoespaciais</title>
+
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Documentação - CAP-423</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Sobre
+  </a>
+</li>
+<li>
+  <a href="manuscript.html">
+    <span class="fa fa-file-text-o"></span>
+     
+    Relatório
+  </a>
+</li>
+<li>
+  <a href="code.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    Código
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/big-inpe/cap-423">
+    <span class="fa fa-github-square"></span>
+     
+    Código-fonte
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">CAP-423 - Ciência de Dados Geoespaciais</h1>
+
+</div>
+
+
+<style>
+body {
+text-align: justify}
+</style>
+<p>André, Antonio, Daniel, Felipe</p>
+<p>Versão em <a href="./geods_report.pdf">PDF</a></p>
+<div id="resumo" class="section level1 unnumbered">
+<h1>Resumo</h1>
+<p>Os avanços tecnológicos têm aprimorado a precisão e a consistência temporal das imagens de satélite de observação da Terra. O grande volume de imagens de satélites disponíveis hoje são disponibilizadas a partir de catálogos. No entanto, os filtros disponíveis nos catálogos permitem apenas buscas espaciais e temporais, sem considerar as informações de uso e cobertura da terra em cada cena. Desta forma, este projeto visa criar uma base de dados com informações obtidas de imagens de satélite disponibilizadas pelo INPE para a recuperação por conteúdo. Foram desenvolvidas aplicações que capturam diferentes tipos de usos da terra, com base em técnicas de inteligência artificial e processamento de imagens. Os seguintes alvos foram considerados: Pivôs Centrais, Queimadas, Agricultura, e Estradas e Vias. Para cada aplicação desenvolvida foram testados diferentes técnicas e abordagens. As aplicações destinadas à identificação de Pivôs Centrais, Cicatrizes de queima e Agricultura empregaram técnicas de processamento de imagens. Por outro lado, a identificação de Estradas e Vias foi realizada por meio de aprendizado profundo. Na identificação de Pivôs Centrais, utilizou-se a transformada de Hough circular, técnica eficaz para a delimitação de elementos circulares em imagens. Para a detecção de queimadas, foi utilizado um algoritmo de detecção de mudança, que compara imagens anteriores e posteriores ao evento de queimada, utilizando os índices dNBR e dNBR-SWIR. Esses índices foram aplicados com base em limiares críticos, e a validação do processo foi realizada por meio do somatório de focos de queimadas ao longo do tempo, abrangendo o dia anterior e o posterior à queima. Já para a identificação de Agricultura, adotou-se a distância euclidiana como métrica de similaridade, a partir de padrões espectro-temporais derivados de amostras coletadas no mapa de referência TerraClass. Para a identificação de Estradas e Vias utilizou-se o modelo U-Net para a segmentação de regiões classificadas. A região de estudo abrange o Distrito Federal e o estado de Goiás, situada no bioma Cerrado. Caracterizado por sua diversidade de formações florestais e variados tipos de uso do solo. Os métodos aplicados demonstraram eficácia na identificação dos alvos investigados, resultando em um conjunto de metadados que possibilitam a recuperação de imagens baseadas em conteúdo.</p>
+</div>
+<div id="introdução" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introdução</h1>
+<p>Atualmente, a ampla disponibilidade de imagens de satélites possibilitam o monitoramento contínuo das mudanças que ocorrem na superfície terrestre <span class="citation">(<a href="#ref-Welsink2023">Welsink et al. 2023</a>; <a href="#ref-Hansen2016">Hansen et al. 2016</a>; <a href="#ref-dupuis2020can">Dupuis et al. 2020</a>)</span>. Para extrair informações desse vasto volume de dados, cientistas e pesquisadores utilizam técnicas de inteligência artificial e processamento de imagens, permitindo a identificação de diferentes tipos de alvos no solo <span class="citation">(<a href="#ref-Simoes2020">Simoes et al. 2020</a>; <a href="#ref-Santos2021">Santos et al. 2021</a>)</span>. Os dados obtidos sobre a cobertura e o uso da terra são essenciais para a análise de padrões de ocupação do solo, como expansão urbana, desmatamento, atividades agrícolas e a recuperação de áreas degradadas, fornecendo subsídios importantes para a gestão ambiental e o planejamento territorial <span class="citation">(<a href="#ref-Chaves2020">Chaves, Picoli, and Sanches 2020</a>; <a href="#ref-Picoli2018">Picoli et al. 2018</a>)</span>.</p>
+<p>Os provedores de imagens de satélite armazenam e distribuem seus dados por meio de plataformas de computação em nuvem. O acesso a essas imagens é realizado por meio de catálogos digitais, que permitem a visualização e aplicação de filtros aos metadados das coleções de imagens, facilitando a identificação e seleção dos ativos desejados. Provedores como <strong>Brazil Data Cubes</strong> <span class="citation">(<a href="#ref-Ferreira2020a">Ferreira et al. 2020</a>)</span>, <strong>Microsoft Planetary Computer</strong> <span class="citation">(<a href="#ref-mpc2024">MPC 2024</a>)</span>, <strong>AWS</strong> <span class="citation">(<a href="#ref-aws2024">AWS 2024</a>)</span> e <strong>Digital Earth Africa</strong> <span class="citation">(<a href="#ref-dea2024">DEA 2024</a>)</span> utilizam a especificação <em>SpatioTemporal Asset Catalog</em> (STAC) <span class="citation">(<a href="#ref-Hanson2019">Hanson 2019</a>)</span> para descrever seus ativos espaço-temporais, promovendo uma padronização que facilita a integração e o uso eficiente desses dados em diferentes plataformas e aplicações.</p>
+<p>Os filtros definidos pela especificação STAC permitem buscas espaciais e temporais baseadas nos metadados dos ativos. Entretanto, considerando a riqueza de informações presentes nas imagens de satélites, observa-se uma demanda crescente por mecanismos de busca mais avançados, que utilizam o conteúdo das imagens como critério de seleção. A recuperação de imagens baseada em conteúdo é um campo de pesquisa dedicado ao desenvolvimento de métodos que extraem informações contidas nas imagens, como cobertura de nuvens, cobertura e uso do solo e estatísticas <span class="citation">(<a href="#ref-datcu2000image">Datcu et al. 2000</a>; <a href="#ref-veltkamp2000content">Veltkamp and Tanase 2000</a>; <a href="#ref-pletsch2018information">Pletsch and Körting 2018</a>)</span>.</p>
+<p>Desta forma, o objetivo deste trabalho é criar uma base de dados com informações obtidas a partir de imagens de satélite disponibilizadas pelo Instituto Nacional de Pesquisas Espaciais (INPE) para a recuperação por conteúdo. Foram desenvolvidas aplicações que capturam diferentes tipos de usos da terra, com base em técnicas de inteligência artificial e processamento de imagens. Os seguintes alvos foram considerados: Pivôs Centrais, Queimadas, Agricultura, e Estradas e Vias. Os métodos aplicados demonstraram eficácia na identificação dos alvos investigados, resultando em um conjunto de metadados que possibilitam a recuperação de imagens baseadas em conteúdo.</p>
+</div>
+<div id="materiais-e-métodos" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Materiais e Métodos</h1>
+<div id="área-de-estudo" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Área de Estudo</h2>
+<p>A área de estudo (Figura <a href="#fig:areaestudo">2.1</a>) deste trabalho compreende duas regiões A e B. A região A está localizada no Distrito Federal (DF) e o estado de Goiás.
+Situada no bioma do Cerrado, a região de estudo possui uma diversidade de formações florestais e diferentes tipos de uso. Formações florestais como Cerrado e Cerradão são característicos dessa região. Outro alvo relevante são os corpos d’água, como nascentes, pequenos rios e reservatórios. No contexto agrícola, a região apresenta extensas áreas destinadas à produção agrícola e pecuária. A agricultura de larga escala é predominante, com destaque para o cultivo de soja, milho e feijão. Além disso, a presença de pastagens, tanto naturais quanto plantadas, é significativa, refletindo a importância da pecuária na economia regional. A região B está situada na tríplice divisa entre os estados do Pará, Mato Grosso e Tocantins, caracterizando-se como uma área estratégica para a análise devido à sua localização geográfica e às dinâmicas de uso e ocupação do solo presentes.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:areaestudo"></span>
+<img src="images/area-estudo.png" alt="Regiões de interesse analisadas." width="100%" />
+<p class="caption">
+Figure 2.1: Regiões de interesse analisadas.
+</p>
+</div>
+</div>
+<div id="metodologia" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Metodologia</h2>
+<p>A Figura <a href="#fig:met">2.2</a> apresenta a metodologia adotada neste trabalho, que envolveu o desenvolvimento de aplicações destinadas a capturar diferentes tipos de uso da terra, com base em técnicas de inteligência artificial e processamento de imagens. Os seguintes alvos foram considerados: pivôs centrais, queimadas, agricultura e estradas/vias. Para cada aplicação, diferentes técnicas e abordagens foram testadas, buscando otimizar os resultados. As aplicações voltadas para a identificação de pivôs centrais, queimadas e agricultura empregaram técnicas de processamento de imagens. No caso dos pivôs centrais, utilizou-se a transformada de Hough circular, reconhecida pela sua eficácia na delimitação de elementos circulares em imagens. Para a detecção de queimadas, foi utilizado um algoritmo de detecção de mudança, que compara imagens anteriores e posteriores ao evento de queimada, utilizando os índices dNBR e dNBR-SWIR. Esses índices foram aplicados com base em limiares críticos, e a validação do processo foi realizada por meio do somatório de focos de queimadas ao longo do tempo, abrangendo o dia anterior e o posterior à queima. Já para a identificação de áreas agrícolas, adotou-se a métrica de distância euclidiana como critério de similaridade, com base em padrões espectro-temporais extraídos de amostras coletadas no mapa de referência TerraClass. Por outro lado, a identificação de estradas e vias foi realizada por meio de aprendizado profundo. Nesta aplicação, utilizou-se o modelo U-Net para segmentar as regiões classificadas como estradas ou vias, demonstrando a eficácia dessa abordagem para tarefas de segmentação espacial.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:met"></span>
+<img src="images/metodologia.png" alt="Metologia geral do trabalho." width="80%" />
+<p class="caption">
+Figure 2.2: Metologia geral do trabalho.
+</p>
+</div>
+<p>A seguir, detalham-se os principais aspectos de cada método desenvolvido, destacando suas particularidades e contribuições.</p>
+</div>
+<div id="identificação-de-pivôs-centrais" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Identificação de Pivôs Centrais</h2>
+<p>A metodologia para esse código foi baseada no artigo de <span class="citation">Rodrigues, Körting, and Queiroz (<a href="#ref-rodrigues2021framework">2021</a>)</span>. Com o objetivo principal de:</p>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li>Receber um item STAC ou uma entrada como uma imagem .tiff;</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li>Retornar se foram encontrados pivôs centrais, e se possível um shapefile com a localização deles.</li>
+</ol></li>
+</ul>
+<p>Foram tomadas duas abordagens principais para detecção de pivôs. Uma consulta dos dados do mapeamento da área e do número de equipamentos de irrigação por pivô central no Brasil em 2022 realizado pela ANA com apoio da Embrapa Milho e Sorgo e do INPE. E retornasse foram encontrados ou não pivôs centrais na imagem .tiff de entrada, e o Shapefile com a localização deles. Outra leva em conta a forma circular que os campos irrigados por esse tipo de equipamento apresentam ao analisar uma imagem de satélite criada a partir do índice de Vegetação por Diferença Normalizada (NDVI):</p>
+<ul>
+<li><ol style="list-style-type: lower-roman">
+<li>Utilização de uma versão adaptada do algoritmo de detecção de bordas de Canny, eliminando a necessidade de parâmetros de entrada;</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: lower-roman">
+<li>Emprego de filtros morfológicos de erosão, retangular 3x3, e filtro Gaussiano para redução de ruídos e para aprimorar a identificação dos pivôs nas imagens;</li>
+</ol></li>
+<li><ol start="3" style="list-style-type: lower-roman">
+<li>Uso da transformada de Hough para identificação de círculos <span class="citation">(<a href="#ref-duda1972use">Duda and Hart 1972</a>)</span>, técnica que realiza a conversão de coordenadas do espaço geométrico para o espaço de parâmetros, conhecido como espaço de Hough.</li>
+</ol></li>
+</ul>
+<p>Foi se utilizada a transformada de Hough para identificação de círculos disponíveis na biblioteca OpenCV do Python.Os parâmetros de entrada foram ajustados considerando o tamanho dos círculos nas imagens do Sentinel-2 da área de estudo de referência provenientes do BDC, e os parâmetros referenciados em um trabalho similar feito por <span class="citation">Rustowicz (<a href="#ref-akashi2018">2018</a>)</span>.</p>
+<p>Este algoritmo foi modificado para remover os círculos com sobreposição detectados, e os parâmetros como a área dos círculos precisa ser melhor ajustado com múltiplas imagens de referências, visando reduzir o número de falso positivos.</p>
+<p>Inicialmente, havia-se a intenção da implementação de um algoritmo de Balanced Random Forest, porém os dados de entrada e o processamento necessário para a implementação do código se provaram inviáveis no escopo do trabalho e poderiam ser propostas como trabalho futuro. Para calibração do algoritmo é necessário o processamento de séries temporais de amplitude de NDVI em múltiplos anos, de muitos locais e tiles diferentes, tornando o trabalho mais complexo que simplesmente um classificador que recebe uma imagem e indica a probabilidade de haver ou não um pivô de irrigação na área encontrada.</p>
+</div>
+<div id="detecção-de-queimadas" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Detecção de Queimadas</h2>
+<p>A Política Nacional de Manejo Integrado de Fogo (MIF) classifica o incêndio como fogo não controlado, abrangendo florestas e outras formas de vegetação. Em contrapartida, a queimada refere-se à queima planejada e controlada da vegetação, que pode ser uma ferramenta de manejo eficaz se aplicada segundo as diretrizes da MIF. No entanto, sua aplicação inadequada pode acarretar penalidades, além de provocar danos irreparáveis à fauna e à flora.</p>
+<p>Segundo <span class="citation">Setzer and Ferreira (<a href="#ref-setzer2022queimadas">2022</a>)</span> Foco de fogo, também denominado foco de queima, foco de calor ou <em>hotspot</em>, refere-se à identificação de locais onde ocorre a queima de vegetação, utilizando imagens digitais capturadas por sensores de satélites. Esses focos são representados como <em>fire pixels</em>, que indicam a presença de fogo em um determinado pixel da imagem. Por outro lado, a área queimada corresponde à extensão total da vegetação afetada pelo fogo, sendo uma medida mais abrangente, utilizada para avaliar a severidade e o impacto do incêndio que requer o uso de dados antes e depois da queima para assim avaliar e dimensionar o impacto sofrido devido a queima do solo.</p>
+<p>No estudo de <span class="citation">Pinto et al. (<a href="#ref-Pinto2024">2024</a>)</span>, foi demonstrada uma correlação direta entre queimadas e focos de queima. Utilizando sensores a bordo de cinco satélites, foi possível identificar frentes de fogo em 70% das áreas queimadas. Além disso, constatou-se que as taxas de ocorrência de focos de queima foram inferiores a 5% nas áreas identificadas, o que confirma que a presença desses focos é um indicativo de que a área está sendo afetada pelo fogo. Esse resultado reforça a importância de monitorar os focos de queima como um sinal de áreas danificadas pelo fogo.</p>
+<p>No estudo de <span class="citation">Bastarrika et al. (<a href="#ref-Bastarrika2024">2024</a>)</span>, os focos de queima são utilizados como pontos de partida para identificar áreas queimadas, servindo como sementes que indicam a localização de queimadas. Esses focos ajudam a apontar regiões correlacionadas à ocorrência de fogo. Além disso, conforme o estudo de <span class="citation">Silva and Baptista (<a href="#ref-silva2023determinaccao">2023</a>)</span>, para a detecção de queimadas, podem ser aplicados limiares críticos em diferentes índices, como a diferença entre os índices normalizados de área queimada, conhecida como dNBR. Quando o valor do dNBR ultrapassa 0,101, é um indicativo de queima. Já o estudo <span class="citation">Pinto et al. (<a href="#ref-Pinto2024">2024</a>)</span> demonstra que o dNBR-SWIR destaca que, em alguns casos, o dNBR pode confundir áreas queimadas com corpos d’água. Para resolver isso, foi desenvolvido um índice aprimorado, o dNBR-SWIR, que filtra mais eficientemente a água. Contudo, ainda há o risco de sombras de nuvens e nuvens serem erroneamente classificadas como queimadas. Para evitar isso, são utilizadas máscaras, como a máscara SCL, que acompanha os dados do produto Sentinel com correção atmosférica. Esse produto é um conjunto científico de nível 2, e os valores 4 e 5 da máscara representam, respectivamente, áreas de vegetação e não-vegetação.</p>
+<div id="lógica-do-algoritmo" class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Lógica do algoritmo</h3>
+<p>Para estimar cicatrizes recentes de queimadas, é necessário realizar uma comparação entre imagens com uma baixa porcentagem de nuvens. O primeiro passo é filtrar imagens da área de interesse que contenham menos de 50% de nuvens. Para isso, são extraídas as bandas 8A, 11 e 12, além do asset SCL, tanto das imagens anteriores quanto das posteriores à queimada, garantindo que ambas tenham 50% ou menos de nuvens. Em seguida, é gerada uma máscara chamada dSCL, que identifica apenas os pixels considerados como vegetação ou não vegetação antes e depois da queima. Conforme pode ser visto abaixo (Figura <a href="#fig:fire-met">2.3</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fire-met"></span>
+<img src="images/fire-metodoly.png" alt="Alvos antes e depois da queima com SCL. " width="80%" />
+<p class="caption">
+Figure 2.3: Alvos antes e depois da queima com SCL.
+</p>
+</div>
+<p>A próxima etapa consiste na geração dos índices NBR e NBR-SWIR para os pixels dentro da máscara dSCL. Esses índices são então comparados com limiares críticos definidos para dNBR (maior que 0,1) e dNBR-SWIR (entre 0,3 e 1), conforme demonstrado abaixo caso estejam dentro dos valores esperados receberam o valor de 1 e caso contrário zero como pode ser visto na Figura <a href="#fig:fire-met2">2.4</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fire-met2"></span>
+<img src="images/fire-metodoly-2.png" alt="Limiares críticos para o índice dNBR." width="80%" />
+<p class="caption">
+Figure 2.4: Limiares críticos para o índice dNBR.
+</p>
+</div>
+<p>Em seguida, conforme apresentado na Figura <a href="#fig:fire-met3">2.5</a>, são sobrepostos os focos de queima, representados por buffers de 300 metros. As cenas que apresentam valores de dNBR e dNBR-SWIR dentro dos limites estabelecidos, com pixels dentro dos buffers dos focos de queima, são classificadas como áreas com cicatrizes de queima.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fire-met3"></span>
+<img src="images/fire-metodoly-4.png" alt="Sobreposição dos focos de queima." width="80%" />
+<p class="caption">
+Figure 2.5: Sobreposição dos focos de queima.
+</p>
+</div>
+<p>Por fim, é gerado um documento que indica as datas das imagens comparadas, tanto antes quanto depois da queimada, e informa se a metodologia aplicada foi capaz de identificar a cicatriz de queima. As imagens que atendem a essas três condições são consideradas como contendo cicatrizes de queima e são salvas dentro de uma tabela parecida a de baixo.</p>
+</div>
+</div>
+<div id="segmentação-de-vias" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Segmentação de Vias</h2>
+<p>Foram testadas 3 estratégias para o processo de extração de vias: duas utilizando técnicas clássicas, como extração de contornos e transformações morfológicas, e uma última utilizando Aprendizado de Máquina.</p>
+<div id="extração-de-contornos-e-análise-de-linearidade" class="section level3" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Extração de contornos e análise de linearidade</h3>
+<p>Neste experimento, a estratégia empregada foi extrair contornos que englobam minimamente vias, com certo grau de discernimento dos demais objetos, para posterior utilização do algoritmo de Hough, “limpando” os contornos não lineares. Segue um passo-a-passo do método:</p>
+<ul>
+<li>Pré-processamento:
+<ul>
+<li>conversão de imagens RGB para escala de cinza.</li>
+<li>cálculo do índice NDVI (Normalized Difference Vegetation Index).</li>
+</ul></li>
+<li>Detecção de Bordas:
+<ul>
+<li>utilização do método de detecção de bordas Canny com ajustes nos parâmetros para diferentes níveis de separação (baixa, moderada e alta).</li>
+<li>análise visual para selecionar os melhores parâmetros.</li>
+</ul></li>
+<li>Transformação de Hough:
+<ul>
+<li>configuração de parâmetros para identificar feições lineares, como estradas, após a aplicação dos detectores de bordas.</li>
+</ul></li>
+<li>Análise de Índices Específicos:
+<ul>
+<li>uso do índice BSI (Bare Soil Index) para realçar áreas não vegetadas, possivelmente relacionadas a estradas ou clareiras.</li>
+</ul></li>
+</ul>
+</div>
+<div id="transformações-morfológicas-e-limiarização-adaptativa" class="section level3" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Transformações morfológicas e limiarização adaptativa</h3>
+<p>Para o segundo experimento, o fluxo combina segmentação, morfologia, detecção de bordas e análise de linearidade para identificar estradas rurais em imagens. Utilizou-se da metodologia proposta por <span class="citation">Ming, Juan, and Zhijun (<a href="#ref-ming2017research">2017</a>)</span>, com algumas adaptações para o problema em questão. Segue racional utilizado:</p>
+<ul>
+<li>Segmentação Binária:
+<ul>
+<li>segmentação da imagem em regiões potenciais de estrada e não-estrada utilizando o algoritmo de segmentação adaptativa de Otsu.</li>
+</ul></li>
+<li>Transformações Morfológicas:
+<ul>
+<li>aplicação de duas erosões seguidas de uma dilatação, usando um elemento estrutural retangular de tamanho 3x3, para refinar as características de estradas não estruturadas.</li>
+</ul></li>
+<li>Detecção de Bordas (LoG - Laplacian of Gaussian):
+<ul>
+<li>suavização da imagem dilatada com um filtro Gaussiano para reduzir ruídos.</li>
+<li>aplicação de um kernel Laplaciano para detectar bordas.</li>
+</ul></li>
+<li>Transformada de Hough:
+<ul>
+<li>delimitação de linhas representando os limites das estradas.</li>
+<li>identificação dos pontos de início e fim de cada linha detectada.</li>
+</ul></li>
+</ul>
+<p>Algumas adaptações foram testadas, como suavização através de filtro Gaussiano, utilização do NDVI e transformações morfológicas antes do processo de limiarização.</p>
+</div>
+<div id="aprendizado-de-máquina" class="section level3" number="2.5.3">
+<h3><span class="header-section-number">2.5.3</span> Aprendizado de Máquina</h3>
+<p>Após os experimentos acima não apresentarem bons resultados, se propôs o desenvolvimento de um modelo de Aprendizado de Máquina (AM) supervisionado. A motivação principal para se testar tal abordagem é encontrar extratores de feições ótimos para esta tarefa em específico, ao contrário de se adotar aqueles feitos à mão como Canny.</p>
+<p>É necessário comentar que se considerou um modelo não-supervisionado, como k-means ou GMM (Gaussian Mixture Models), entretanto a resposta espectral de vias não-asfaltadas é muito parecida, senão idêntica, daquela de solo exposto. Considerando que a área de estudo se situa no bioma Cerrado (também conhecida como savana brasileira), encontra limites óptimos dentro do espaço de atributos considerando apenas que a informação espectral é inviável.</p>
+<p>Infelizmente não se encontrou dataset de imagens do Sentinel-2 com anotações de vias, portanto nós desenvolvemos um. Devido à escassez de tempo, foi necessário encontrar uma base de anotações de vias já pronta, preferencialmente em formato vetorial e georreferenciado. Primeiramente se considerou a base OpenStreetMap, devido à sua abrangência espacial, entretanto logo se observou que, para vias não-asfaltadas especificamente, a base deixa muito a desejar, com o problema se agravando conforme se afasta de regiões metropolitanas. A solução encontrada foi a base desenvolvida pelo projeto IAmazon <span class="citation">(<a href="#ref-botelho2022mapping">Botelho Jr et al. 2022</a>)</span>, o qual mapeou todas as estradas (asfaltadas e não-asfaltadas) do bioma amazônico dentro do território nacional para o ano de 2012. A área delimitada para se extrair as amostras se encontra na região de transição entre Amazônia e Cerrado, no intuito se de aproximar o máximo possível das características da região de estudo (Figura <a href="#fig:areaestudo">2.1</a>).</p>
+<p>O processo de criação dos limites de cada amostra (aqui intitulado “frames”) se deu utilizando QGis. Foram gerados 7992 frames de 1280mx1280m, sem sobreposição. Para a extração das anotações, primeiro se converteu o dado vetorial em matricial, com pixels de via igual a 1 e 0 caso contrário. Em formato matricial, as anotações foram recortadas para cada frame. Já o recorte das imagens do Sentinel-2 se deu através do Google Earth Engine (GEE), para as datas de abril de 2017 a abril de 2018. Se utilizou de tal intervalo de tempo devido à localização adotada apresentar muita nuvem ao longo de todo o ano, portanto foi necessário processo de mosaicagem para pixels com presença de nuvem. Segue na Figura <a href="#fig:via-1">2.6</a> abaixo um exemplo de amostra extraída.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:via-1"></span>
+<img src="images/via-1.png" alt="Exemplo de amostra extraída." width="80%" />
+<p class="caption">
+Figure 2.6: Exemplo de amostra extraída.
+</p>
+</div>
+<p>Devido à discrepância entre data de anotação e captura das imagens, algumas amostras possuem vias não anotadas.</p>
+<p>Em resumo, foram geradas 7992 amostras, onde cada amostra é um par de imagens: as anotações em forma de máscara binária e a imagem propriamente dita com 4 bandas (vermelho, verde, azul e infravermelho próximo) e dimensão de 128x128 pixels.</p>
+<p>A arquitetura selecionada para o modelo é aquela da U-Net, devido à sua ampla utilização em tarefas de classificação de imagens no meio do Sensoriamento Remoto.</p>
+<p>Se utilizou do torch para a implementação do modelo e rotinas de treinamento e teste. O código foi executado no ambiente do Colab, com acesso a uma GPU T4. O modelo foi treinado por 60 épocas com um taxa de aprendizado inicial de 0,01, decaindo 0,1 a cada 20 épocas. A função perda foi o dice e o otimizador, Adam.</p>
+</div>
+</div>
+<div id="detecção-de-áreas-agrícolas" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Detecção de Áreas Agrícolas</h2>
+<p>A Figura <a href="#fig:metagdri">2.7</a> apresenta os processos metodológicos seguidos para a identificação de áreas agrícolas. Desta forma, foram extraídas amostras do mapa temático TerraClass 2022. Foram selecionados, de forma estratificada, 150 pontos para as seguintes classes: Vegetação, Silvicultura, Pastagem, Agricultura Perene, Agricultura Temporária de um ciclo, Agricultura Temporária de mais de um ciclo e Água. No caso da classe Vegetação, foram consideradas as subcategorias de Vegetação Primária e Secundária. O estudo utilizou o cubo de dados de imagens Sentinel-2, com composição temporal de 16 dias, considerando as bandas/índices B02, B8A, B12, EVI, NDVI e SCL. Para cada banda, foi calculada a mediana temporal dos valores registrados em todos os tempos. Com base nessas medianas temporais, aplicou-se a métrica de distância euclidiana para realizar a classificação das áreas em cada data. Para minimizar erros de comissão, foi aplicada uma máscara às regiões que não foram classificadas como tipos de agricultura pelo TerraClass, garantindo maior precisão nos resultados obtidos.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:metagdri"></span>
+<img src="images/metodologia_agri.png" alt="Metologia usada para geração dos mapas Agrícolas (source: Adaptado de @Simoes2020)." width="80%" />
+<p class="caption">
+Figure 2.7: Metologia usada para geração dos mapas Agrícolas (source: Adaptado de <span class="citation">Simoes et al. (<a href="#ref-Simoes2020">2020</a>)</span>).
+</p>
+</div>
+</div>
+</div>
+<div id="resultados" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Resultados</h1>
+<div id="identificação-de-pivôs-centrais-1" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Identificação de Pivôs Centrais</h2>
+<p>Os resultados dependem do caso de uso do trabalho, caso a imagem de referência seja de um ano em que tenha disponível os dados da Embrapa, o código consegue comparar os dados e retornar a localização dos pivôs encontrados. Como trabalho futuro, pode-se ler os metadados da entrada para identificar o ano da imagem e comparar com todos os bancos de dados da Embrapa disponíveis. A Figura <a href="#fig:pivo-res-1">3.1</a> mostra o resultado dos pivôs detectados no shapefile de saída:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pivo-res-1"></span>
+<img src="images/pivo-res-1.png" alt="Resultados do método de identificação de pivôs centrais." width="80%" />
+<p class="caption">
+Figure 3.1: Resultados do método de identificação de pivôs centrais.
+</p>
+</div>
+<p>O Resultado utilizando o método de Hough porém, se provou com baixa eficácia devido ao alto número de falso positivos:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pivo-res-2"></span>
+<img src="images/pivo-res-2.png" alt="Resultados de falsos positivos encontrados no método de Hough." width="80%" />
+<p class="caption">
+Figure 3.2: Resultados de falsos positivos encontrados no método de Hough.
+</p>
+</div>
+<p>Este código também retorna o número de pivôs, ou no caso de círculos detectados, e um shapefile contendo os círculos detectados.</p>
+</div>
+<div id="detecção-de-queimadas-1" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Detecção de Queimadas</h2>
+<p>Em análises práticas, foi observado que o índice dNBRSWIR foi eficaz na identificação de áreas queimadas para valores abaixo de 1 e acima de 0,3, sem confundir frentes de fogo ou gerar valores falsos de queima. Além disso, conforme a Figura <a href="#fig:fire-res-1">3.3</a>, o experimento revelou que, entre junho e outubro de 2022, foi possível identificar a maior quantidade de cicatrizes de queima.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fire-res-1"></span>
+<img src="images/fire-res-1.png" alt="Quantidade de queimas identificadas entre junho e outroubro de 2022." width="80%" />
+<p class="caption">
+Figure 3.3: Quantidade de queimas identificadas entre junho e outroubro de 2022.
+</p>
+</div>
+<p>Que pode ser visto e modelado como um envelope de função com média em torno do mês 7 como pode ser visto no envelope na Figura <a href="#fig:fire-res-2">3.4</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fire-res-2"></span>
+<img src="images/fire-res-2.png" alt="Curva com o envelope de função com média em torno do mês 7." width="80%" />
+<p class="caption">
+Figure 3.4: Curva com o envelope de função com média em torno do mês 7.
+</p>
+</div>
+</div>
+<div id="segmentação-de-vias-1" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Segmentação de Vias</h2>
+<p>O principal problema enfrentado utilizando extração de contornos e análise de linearidade foi a qualidade da máscara de contornos. A maior parte das estradas são delineadas, entretanto nem todas e com bastante confusão entre classes (por exemplo margem de rio), o que por si só mina o resultado da transformação de Hough. Segue exemplo abaixo através da Figura <a href="#fig:vias-res-1">3.5</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:vias-res-1"></span>
+<img src="images/vias-res-1.png" alt="Resultado do método de identificação de vias." width="80%" />
+<p class="caption">
+Figure 3.5: Resultado do método de identificação de vias.
+</p>
+</div>
+<p>Utilizando o índice NDVI tem-se uma melhora, entretanto não muito significativa. Já utilizando o BSI, a piora é considerável.
+Já para as transformações morfológicas e limiarização adaptativa, o problema maior foi encontrar uma limiarização ideal. Foram testados diferentes patches de imagem e cada um responde diferentemente aos limites adotados, o que dificulta a proposta de se ter uma ferramenta “automatizada”.</p>
+<p>O modelo de AP foi o que apresentou resultados mais promissores. As métricas de desempenho são apresentadas na Tabela <a href="#fig:vias-res-2">3.6</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:vias-res-2"></span>
+<img src="images/vias-res-2.png" alt="Tabela com as métricas de desempenho do modelo avaliado." width="20%" />
+<p class="caption">
+Figure 3.6: Tabela com as métricas de desempenho do modelo avaliado.
+</p>
+</div>
+<p>Segue um exemplo de saída para uma amostra do conjunto de teste para melhor visualização.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:vias-res-3"></span>
+<img src="images/vias-res-3.png" alt="Exemplo de detecção de vias para uma amostra do conjunto de teste." width="80%" />
+<p class="caption">
+Figure 3.7: Exemplo de detecção de vias para uma amostra do conjunto de teste.
+</p>
+</div>
+<p>O desempenho do modelo é moderado. Na Figura <a href="#fig:vias-res-3">3.7</a>, é possível observar que, conforme a via atravessa uma região mais árida, o modelo não é capaz de reconhecer fielmente a geometria, até mesmo confundindo pixels de solo exposto como via. Em contrapartida, o trecho de via mais nítido é completamente demarcado. A espessura da via é devido ao buffer de 5 metros para cada lado aplicado ao dado vetorial antes de ser convertido em máscaras.</p>
+</div>
+<div id="detecção-de-áreas-agrícolas-1" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Detecção de Áreas Agrícolas</h2>
+<p>A Figura <a href="#fig:agri-res-1">3.8</a> apresenta os padrões espectro-temporais dos índices NDVI e EVI das amostras analisadas. Nota-se que os padrões das classes agrícolas estão bem definidos, refletindo o período agrícola do ano avaliado e a qualidade das amostras extraídas. Por outro lado, o perfil da classe Água apresenta um comportamento atípico para os índices NDVI e EVI. Embora os valores permaneçam baixos, consistentes com áreas de baixa vegetação, as variações observadas sugerem possíveis influências de fatores externos, como a presença de vegetação costeira. Por exemplo, o índice EVI manifesta-se como uma linha reta, sem variações ao longo do intervalo temporal analisado, enquanto o NDVI exibe dois picos inesperados durante o mesmo período. Uma possível explicação para o comportamento observado no NDVI é a presença de pontos localizados nas bordas de rios, onde o crescimento de vegetação próxima pode influenciar os resultados. Esse efeito pode causar variações no índice ao longo do tempo, refletindo a dinâmica das áreas marginais e interferindo na estabilidade do padrão espectro-temporal esperado para a classe de Água. As demais classes, como Pastagem, Silvicultura e Vegetação, apresentaram o comportamento espectro-temporal esperado.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:agri-res-1"></span>
+<img src="images/agri-res-1-new.png" alt="Padrões espectro-temporais das amostras usadas." width="100%" />
+<p class="caption">
+Figure 3.8: Padrões espectro-temporais das amostras usadas.
+</p>
+</div>
+<p>Para avaliar a capacidade de generalização do método desenvolvido, utilizou-se uma imagem do dia 26 de junho de 2021. Esse período foi escolhido por representar o início do ciclo agrícola para o ano agrícola de 2022, caracterizando-se como um desafio para o algoritmo devido à resposta espectral ainda inicial dos alvos agrícolas. A Figura <a href="#fig:agri-res-2">3.9</a> apresenta os resultados do método de detecção de áreas agrícolas proposto neste trabalho. Para ilustrar os resultados obtidos foram selecionadas três áreas de interesse. Como base de comparação, foi utilizada uma imagem Sentinel-2 com composição agrícola obtida em 3 de março de 2022, representando um período próximo ao máximo vigor vegetativo das culturas. A área A apresenta talhões agrícolas com padrões geométricos bem definidos, ainda em estágio inicial de ciclo na imagem analisada. Na imagem Sentinel-2, observa-se que cores mais próximas do magenta correspondem ao pico do vigor vegetativo. A região B evidencia pivôs de irrigação centrais, identificados com sucesso pelo método. Por fim, a região C destaca um conjunto de talhões de diferentes tamanhos, todos corretamente detectados, reforçando a eficácia do método proposto em contextos agrícolas variados.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:agri-res-2"></span>
+<img src="images/agri-res-2.png" alt="Resultado do método desenvolvido para identificação de áreas agrícolas." width="100%" />
+<p class="caption">
+Figure 3.9: Resultado do método desenvolvido para identificação de áreas agrícolas.
+</p>
+</div>
+</div>
+</div>
+<div id="discussão" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Discussão</h1>
+<p>De maneira geral, os métodos desenvolvidos demonstraram eficácia na identificação dos alvos analisados. No caso específico da análise de cicatrizes de queimada, embora o estudo não estime diretamente as áreas queimadas, ele fornece uma base relevante para essa estimativa, identificando cenas que podem ser comparadas e destacando aquelas em que há evidência de queimadas. Esse sistema pode ser utilizado como um <em>dataset</em> para estudos futuros voltados à identificação de áreas queimadas, especialmente com o uso de aprendizado de máquina, técnicas de sensoriamento remoto e processamento de imagens. O método proposto mostrou-se eficiente na identificação das chamadas “sementes de fogo”, que indicam a presença de cicatrizes de queimadas nas imagens analisadas. Com base no filtro empregado, que considera critérios como <em>tiles</em>, datas e cobertura de nuvens, o experimento permitiu identificar tanto os períodos anteriores quanto posteriores à queimada, além de indicar a existência ou ausência de cicatrizes recentes de queima, oferecendo uma ferramenta robusta para estudos mais aprofundados sobre o tema.</p>
+<p>Na detecção de vias, a análise comparativa entre as abordagens utilizadas evidenciou tanto as limitações quanto as potencialidades de métodos clássicos e técnicas baseadas em aprendizado de máquina. A estratégia de extração de contornos utilizando a transformada de Hough mostrou-se promissora para a identificação de feições lineares, mas enfrentou desafios relacionados à confusão entre classes e ao delineamento inconsistente das vias. Apesar de o uso do NDVI ter proporcionado uma ligeira melhora nos resultados, a aplicação do índice BSI apresentou desempenho inferior, provavelmente devido à similaridade espectral entre estradas não pavimentadas e solo exposto. De forma semelhante, as transformações morfológicas combinadas com limiarização adaptativa encontraram dificuldades em generalizar os parâmetros, o que limitou a aplicabilidade em diferentes <em>patches</em> de imagem e dificultou a automação do processo. Por outro lado, a abordagem baseada em AM, empregando o modelo U-Net, destacou-se como a solução mais robusta para a tarefa. Apesar de enfrentar desafios específicos, como discrepâncias temporais nas anotações e confusões em áreas de transição entre vegetação e terrenos áridos, o modelo apresentou métricas de desempenho moderadas, com um F1-score de 0,60. O modelo demonstrou boa capacidade de segmentação em trechos nítidos de vias, mas encontrou dificuldades em regiões áridas, onde a semelhança espectral com o solo exposto prejudicou a acurácia. Essas observações ressaltam a importância de refinamentos futuros para lidar com variabilidades contextuais e melhorar a generalização do modelo.</p>
+<p>Na detecção de áreas agrícolas, foi possível identificar culturas ainda no início do ciclo, demonstrando a sensibilidade do método mesmo em estágios iniciais de desenvolvimento das plantações. A aplicação de uma função de suavização espacial mostrou-se eficaz na remoção do efeito “sal e pimenta”, caracterizado pela presença de granularidade excessiva nos valores de classificação. Além disso, a etapa de pós-classificação utilizando o mapa TerraClass 2022 foi fundamental para prevenir erros de comissão, pois somente as regiões que apresentaram concordância com o mapa de referência foram mantidas na classificação final. Essa abordagem combinada garantiu maior precisão e consistência nos resultados obtidos, fortalecendo a robustez do método desenvolvido.</p>
+</div>
+<div id="conclusão" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Conclusão</h1>
+<p>Este trabalho apresentou o desenvolvimento de métodos baseados em extração de informações para identificação de diferentes alvos na superfície terrestre. Os resultados apresentados demonstram o potencial e os desafios associados ao uso de técnicas de processamento de imagens e aprendizado de máquina para a detecção de diferentes alvos, como áreas agrícolas, cicatrizes de queimadas, vias e pivôs centrais. Na detecção de áreas agrícolas, o método mostrou-se eficiente ao identificar culturas ainda no início do ciclo, beneficiando-se do uso de funções de suavização espacial para eliminar efeitos indesejados e da pós-classificação com base no mapa TerraClass 2022, o que reduziu significativamente erros de comissão. Para a análise de queimadas, a abordagem proposta destacou-se como uma base confiável para estudos futuros, identificando com sucesso “sementes de fogo” e fornecendo um ponto de partida para a estimativa de áreas queimadas. No contexto da detecção de vias, a comparação entre métodos clássicos e baseados em aprendizado profundo revelou as limitações de abordagens tradicionais, como a transformada de Hough, e evidenciou a robustez da U-Net, que, apesar de desafios em regiões áridas, apresentou desempenho promissor.</p>
+<p>Para trabalhos futuros, planeja-se a utilização de diferentes áreas de estudo para avaliar a capacidade de generalização dos métodos desenvolvidos, ampliando sua aplicabilidade em contextos variados. Além disso, será definida uma estrutura padronizada de metadados para integrar um sistema baseado na recuperação de imagens de satélite por conteúdo.</p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-aws2024" class="csl-entry">
+AWS. 2024. <span>“Amazon Web Services.”</span> <a href="https://registry.opendata.aws/sentinel-2/" class="uri">https://registry.opendata.aws/sentinel-2/</a>; Amazon Web Services.
+</div>
+<div id="ref-Bastarrika2024" class="csl-entry">
+Bastarrika, Aitor, Armando Rodriguez Montellano, Ekhi Roteta, Stijn Hantson, Magí Franquesa, Torre Leyre, Jon Gonzalez-Ibarzabal, et al. 2024. <span>“An Automatic Procedure for Mapping Burned Areas Globally Using Sentinel-2 and VIIRS/MODIS Active Fires in Google Earth Engine.”</span> <em>ISPRS Journal of Photogrammetry and Remote Sensing</em> 218 (September):232–45. <a href="https://doi.org/10.1016/j.isprsjprs.2024.08.019">https://doi.org/10.1016/j.isprsjprs.2024.08.019</a>.
+</div>
+<div id="ref-botelho2022mapping" class="csl-entry">
+Botelho Jr, Jonas, Stefany CP Costa, Júlia G Ribeiro, and Carlos M Souza Jr. 2022. <span>“Mapping Roads in the Brazilian Amazon with Artificial Intelligence and Sentinel-2.”</span> <em>Remote Sensing</em> 14 (15). MDPI:3625.
+</div>
+<div id="ref-Chaves2020" class="csl-entry">
+Chaves, Michel, Michelle Picoli, and Ieda Sanches. 2020. <span>“Recent <span>Applications</span> of <span>Landsat</span> 8/<span>OLI</span> and <span>Sentinel-2</span>/<span>MSI</span> for <span>Land Use</span> and <span>Land Cover Mapping</span>: <span>A Systematic Review</span>.”</span> <em>Remote Sensing</em> 12 (18). <span>Multidisciplinary Digital Publishing Institute</span>:3062. <a href="https://doi.org/10.3390/rs12183062">https://doi.org/10.3390/rs12183062</a>.
+</div>
+<div id="ref-datcu2000image" class="csl-entry">
+Datcu, Mihai, Klaus Seidel, Andrea Pelizarri, Michael Schroeder, Hubert Rehrauer, Gintautas Palubinskas, and Marc Walessa. 2000. <span>“Image Information Mining and Remote Sensing Data Interpretation.”</span> In <em>IGARSS 2000. IEEE 2000 International Geoscience and Remote Sensing Symposium. Taking the Pulse of the Planet: The Role of Remote Sensing in Managing the Environment. Proceedings (Cat. No. 00CH37120)</em>, 7:3057–59. IEEE.
+</div>
+<div id="ref-dea2024" class="csl-entry">
+DEA. 2024. <span>“Digital Earth Africa.”</span> <a href="https://www.digitalearthafrica.org/" class="uri">https://www.digitalearthafrica.org/</a>; Digital Earth Africa.
+</div>
+<div id="ref-duda1972use" class="csl-entry">
+Duda, Richard O, and Peter E Hart. 1972. <span>“Use of the Hough Transformation to Detect Lines and Curves in Pictures.”</span> <em>Communications of the ACM</em> 15 (1). ACM New York, NY, USA:11–15.
+</div>
+<div id="ref-dupuis2020can" class="csl-entry">
+Dupuis, Chloé, Philippe Lejeune, Adrien Michez, and Adeline Fayolle. 2020. <span>“How Can Remote Sensing Help Monitor Tropical Moist Forest Degradation?—a Systematic Review.”</span> <em>Remote Sensing</em> 12 (7). MDPI:1087.
+</div>
+<div id="ref-Ferreira2020a" class="csl-entry">
+Ferreira, Karine R., Gilberto R. Queiroz, Lubia Vinhas, Rennan F. B. Marujo, Rolf E. O. Simoes, Michelle C. A. Picoli, Gilberto Camara, et al. 2020. <span>“Earth <span>Observation Data Cubes</span> for <span>Brazil</span>: <span>Requirements</span>, <span>Methodology</span> and <span>Products</span>.”</span> <em>Remote Sensing</em> 12 (24). <span>Multidisciplinary Digital Publishing Institute</span>:4033. <a href="https://doi.org/10.3390/rs12244033">https://doi.org/10.3390/rs12244033</a>.
+</div>
+<div id="ref-Hansen2016" class="csl-entry">
+Hansen, Matthew C, Alexander Krylov, Alexandra Tyukavina, Peter V Potapov, Svetlana Turubanova, Bryan Zutta, Suspense Ifo, Belinda Margono, Fred Stolle, and Rebecca Moore. 2016. <span>“Humid Tropical Forest Disturbance Alerts Using Landsat Data.”</span> <em>Environmental Research Letters</em> 11 (3). IOP Publishing:034008.
+</div>
+<div id="ref-Hanson2019" class="csl-entry">
+Hanson, M. 2019. <span>“The <span class="nocase">Open-source</span> Software Ecosystem for Leveraging Public Datasets in <span>Spatio-Temporal Asset Catalogs</span> (<span>STAC</span>).”</span> <em>AGU Fall Meeting Abstracts</em> 23.
+</div>
+<div id="ref-ming2017research" class="csl-entry">
+Ming, Xu, Zhang Juan, and Fang Zhijun. 2017. <span>“Research on Unstructured Road Detection Algorithm Based on Improved Morphological Operations.”</span> IET.
+</div>
+<div id="ref-mpc2024" class="csl-entry">
+MPC. 2024. <span>“Microsoft Planetary Computer.”</span> <a href="https://planetarycomputer.microsoft.com/" class="uri">https://planetarycomputer.microsoft.com/</a>; Microsoft Planetary Computer.
+</div>
+<div id="ref-Picoli2018" class="csl-entry">
+Picoli, Michelle, Gilberto Camara, Ieda Sanches, Rolf Simoes, Alexandre Carvalho, Adeline Maciel, Alexandre Coutinho, et al. 2018. <span>“Big Earth Observation Time Series Analysis for Monitoring <span>Brazilian</span> Agriculture.”</span> <em>ISPRS Journal of Photogrammetry and Remote Sensing</em> 145:328–39. <a href="https://doi.org/10.1016/j.isprsjprs.2018.08.007">https://doi.org/10.1016/j.isprsjprs.2018.08.007</a>.
+</div>
+<div id="ref-Pinto2024" class="csl-entry">
+Pinto, G. S., H. Bernini, C. G. Messias, O. A. S. Silva, P. W. Cunha, P. S. Victorino, and F. Morelli. 2024. <span>“Assessment of Active Fire Detection in Serra Da Canastra National Park Using MODIS and VIIRS Sensors.”</span> <em>The International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences</em> XLVIII-3-2024:407–12. <a href="https://doi.org/10.5194/isprs-archives-XLVIII-3-2024-407-2024">https://doi.org/10.5194/isprs-archives-XLVIII-3-2024-407-2024</a>.
+</div>
+<div id="ref-pletsch2018information" class="csl-entry">
+Pletsch, Mikhaela Aloı́sia Jéssie Santos, and Thales Sehn Körting. 2018. <span>“Information Mining for Automatic Search in Remote Sensing Image Catalogs.”</span> <em>GeoInformatics</em>, 1860–84.
+</div>
+<div id="ref-rodrigues2021framework" class="csl-entry">
+Rodrigues, Marcos Lima, Thales Sehn Körting, and Gilberto Ribeiro de Queiroz. 2021. <span>“A Framework to Automatic Detect Center Pivots Using Land Use and Land Cover Data.”</span> <em>Rev. Bras. Cartogr</em> 73 (4).
+</div>
+<div id="ref-akashi2018" class="csl-entry">
+Rustowicz, Rose et al. 2018. <span>“Detect Central Pivot Irrigation to Monitor Groundwater.”</span> <a href="https://devpost.com/software/detect-central-pivot-irrigation-to-monitor-groundwater" class="uri">https://devpost.com/software/detect-central-pivot-irrigation-to-monitor-groundwater</a>; DEVPOST.
+</div>
+<div id="ref-Santos2021" class="csl-entry">
+Santos, Lorena Alves, Karine Ferreira, Michelle Picoli, Gilberto Camara, Raul Zurita-Milla, and Ellen-Wien Augustijn. 2021. <span>“Identifying <span>Spatiotemporal Patterns</span> in <span>Land Use</span> and <span>Cover Samples</span> from <span>Satellite Image Time Series</span>.”</span> <em>Remote Sensing</em> 13 (5). <span>Multidisciplinary Digital Publishing Institute</span>:974. <a href="https://doi.org/10.3390/rs13050974">https://doi.org/10.3390/rs13050974</a>.
+</div>
+<div id="ref-setzer2022queimadas" class="csl-entry">
+Setzer, Alberto W, and Nelson J Ferreira. 2022. <em>Queimadas e Inc<span>ê</span>ndios Florestais: Mediante Monitoramento Orbital</em>. Oficina de Textos.
+</div>
+<div id="ref-silva2023determinaccao" class="csl-entry">
+Silva, Lucas Inácio da, and Gustavo Macedo de Mello Baptista. 2023. <span>“Determina<span>ç</span><span>ã</span>o Do Limiar Cr<span>ı́</span>tico <span class="nocase">à</span> Ocorr<span>ê</span>ncia de Inc<span>ê</span>ndios No Parque Nacional de Bras<span>ı́</span>lia (Brasil) Por Meio Da an<span>á</span>lise Temporal Utilizando <span class="nocase">ı́</span>Ndices Espectrais.”</span> <em>Sociedade &amp; Natureza</em> 35. SciELO Brasil:e67446.
+</div>
+<div id="ref-Simoes2020" class="csl-entry">
+Simoes, Rolf, Michelle C. A. Picoli, Gilberto Camara, Adeline Maciel, Lorena Santos, Pedro R. Andrade, Alber Sánchez, Karine Ferreira, and Alexandre Carvalho. 2020. <span>“Land Use and Cover Maps for <span>Mato Grosso State</span> in <span>Brazil</span> from 2001 to 2017.”</span> <em>Scientific Data</em> 7 (1):34. <a href="https://doi.org/10.1038/s41597-020-0371-4">https://doi.org/10.1038/s41597-020-0371-4</a>.
+</div>
+<div id="ref-veltkamp2000content" class="csl-entry">
+Veltkamp, Remco C, and Mirela Tanase. 2000. <span>“Content-Based Image Retrieval Systems: A Survey.”</span> Technical Report UU-CS-2000-34, Dept. of Computing Science, Utrecht University.
+</div>
+<div id="ref-Welsink2023" class="csl-entry">
+Welsink, Anne-Juul, Johannes Reiche, Veronique De Sy, Sarah Carter, Bart Slagter, Daniela Requena Suarez, Ben Batros, Marielos Peña-Claros, and Martin Herold. 2023. <span>“Towards the Use of Satellite-Based Tropical Forest Disturbance Alerts to Assess Selective Logging Intensities.”</span> <em>Environmental Research Letters</em> 18 (5). IOP Publishing:054023.
+</div>
+</div>
+</div>
+
+
+
+2024 - CAP-423
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
