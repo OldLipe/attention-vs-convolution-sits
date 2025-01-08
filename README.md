@@ -1,8 +1,7 @@
 # Comparative Analysis of Pixel-Based and Object-Based Approaches for SITS Classification
 [![rc](https://img.shields.io/badge/research%20compendium-ready-brightgreen)](#)
 
-Repository containing the code, data, and results. Based on a research compendium. 
-All the data is available for work replication.
+Repository containing the code, data, and results. Based on a research compendium, all the data is available for work replication.
 
 All the code in this work has been created using the R SITS package in version 1.5.2. To install it, use the command
 
