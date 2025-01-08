@@ -1,8 +1,5 @@
-<img src="docs/images/cap.png" alt="CAP icon" align="right" height="30"/>
-
-# COMPARATIVE ANALYSIS OF PIXEL-BASED AND OBJECT-BASED APPROACHES FOR SITS CLASSIFICATION
+# Comparative Analysis of Pixel-Based and Object-Based Approaches for SITS Classification
 [![rc](https://img.shields.io/badge/research%20compendium-ready-brightgreen)](#)
-
 
 Repository containing the code, data, and results. Based on a research compendium. 
 All the data is available for work replication.
