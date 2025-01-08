@@ -1,11 +1,10 @@
 <img src="docs/images/cap.png" alt="CAP icon" align="right" height="30"/>
 
-# Deep Learning Applied in Geoinformatics Course - Final work
+# COMPARATIVE ANALYSIS OF PIXEL-BASED AND OBJECT-BASED APPROACHES FOR SITS CLASSIFICATION
 [![rc](https://img.shields.io/badge/research%20compendium-ready-brightgreen)](#)
 
 
-Repository containing the final work of the Deep Learning course. 
-This repository is based on a research compendium. 
+Repository containing the code, data, and results. Based on a research compendium. 
 All the data is available for work replication.
 
 All the code in this work has been created using the R SITS package in version 1.5.2. To install it, use the command
