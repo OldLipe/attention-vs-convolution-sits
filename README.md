@@ -1,4 +1,4 @@
-# Comparative Analysis of Pixel-Based and Object-Based Approaches for SITS Classification
+# Comparative Analysis of Attention-Based and Convolution-Based Approaches for SITS Classification
 [![rc](https://img.shields.io/badge/research%20compendium-ready-brightgreen)](#)
 
 This repository contains code, data, and results for work replication. Based on a research compendium, all the data is available.
@@ -9,8 +9,8 @@ All the code in this work has been created using the R SITS package in version 1
 install.packages("sits")
 ```
 To view notebooks:
-  - [Notebook comparing pixel and object-based approaches in Rondonia](https://geo-dl.netlify.app/rondonia_experiment)
-  - [Notebook comparing pixel and object-based approaches in Petrolina](https://geo-dl.netlify.app/petrolina_experiment)
+  - [Notebook comparing attention and convolution-based approaches in Rondonia](https://geo-dl.netlify.app/rondonia_experiment)
+  - [Notebook comparing attention and convolution-based approaches in Petrolina](https://geo-dl.netlify.app/petrolina_experiment)
 
 ## Repository organization:
 
